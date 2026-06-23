@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowZap Premium — Operação Industrial</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js para Gráficos Avançados -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: radial-gradient(circle at top right, #1e1b4b, #000000 60%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* ANIMAÇÃO DE ILUMINAÇÃO DE MOVIMENTO (VIVA) */
+        @keyframes textoVivo {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glowPulso {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.4)); }
+            50% { filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.8)); }
+        }
+
+        /* PULSO DO BOTÃO DO CATÁLOGO */
+        @keyframes glowVerde {
+            0%, 100% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+        }
+        .btn-catalogo-brilhante {
+            animation: glowVerde 2s infinite ease-in-out;
+        }
+
+        .titulo-industrial {
+            background: linear-gradient(
+                90deg, 
+                #ffffff 0%, 
+                #a1a1aa 25%, 
+                #ffffff 50%, 
+                #3f3f46 75%, 
+                #ffffff 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textoVivo 6s linear infinite;
+        }
+
+        .titulo-vendas {
+            background: linear-gradient(
+                90deg, 
+                #c084fc 0%, 
+                #fafafa 33%, 
+                #a855f7 66%, 
+                #71717a 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textoVivo 4s linear infinite, glowPulso 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="text-white antialiased selection:bg-purple-500/30">
+
+    <div class="min-h-screen p-6 lg:p-12 max-w-7xl mx-auto space-y-10">
+        
+        <!-- HEADER OTIMIZADO E CORRIGIDO -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center border-b border-white/5 pb-10 pt-4">
+            
+            <!-- Esquerda: Tag de Status e Título Principal -->
+            <div class="md:col-span-2 space-y-4">
+                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.3em] text-purple-400">
+                    <span class="inline-block w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                    High-Ticket Operations Engine
+                </div>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.95] uppercase select-none">
+                    <span class="titulo-industrial">Operação Industrial</span><br />
+                    <span class="titulo-vendas">de Vendas</span>
+                </h1>
+            </div>
+            
+            <!-- Direita: Botão e Perfil alinhados na mesma linha vertical -->
+            <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-4 border-t border-white/5 md:border-none pt-4 md:pt-0">
+                <button onclick="abrirModalCatalogo()" class="btn-catalogo-brilhante flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition duration-300 transform hover:scale-105 whitespace-nowrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.008 1.24l.885 1.77a2.25 2.25 0 0 0 2.007 1.24h1.98a2.25 2.25 0 0 0 2.007-1.24l.885-1.77a2.25 2.25 0 0 1 2.007-1.24h3.86m-18 0h18a2.25 2.25 0 0 1 2.25 2.25v4.5A2.25 2.25 0 0 1 21.75 21H2.25A2.25 2.25 0 0 1 0 18.75v-4.5A2.25 2.25 0 0 1 2.25 13.5Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 7.5h12M6 10.5h12M6 4.5h12" />
+                    </svg>
+                    Catálogo de Produtos
+                </button>
+
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-sm font-bold tracking-wide text-zinc-100">Ana Laura</p>
+                        <p class="text-[10px] text-emerald-400 font-medium tracking-wider uppercase">Gestão Ativa</p>
+                    </div>
+                    <div class="relative w-14 h-14">
+                        <img src="perfilana.jpeg" alt="Perfil Ana Laura" class="rounded-full object-cover border-2 border-white/20 shadow-[0_0_15px_rgba(168,85,247,0.3)] w-full h-full">
+                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-black rounded-full shadow-[0_0_8px_#10b981]"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRÊS BALÕES PRINCIPAIS -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- BALÃO 1: POTENCIAIS CLIENTES (LEADS) -->
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between h-64 relative overflow-hidden">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-zinc-500 text-xs font-bold uppercase tracking-wider block">Pipeline de Entrada</span>
+                        <h3 class="text-xl font-semibold text-zinc-200 mt-1">Potenciais Clientes</h3>
+                        <p class="text-xs text-zinc-400 mt-1">Tráfego Pago & Abordagem Direta X1.</p>
+                    </div>
+                    <button onclick="abrirModalLead()" class="w-10 h-10 bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xl rounded-xl flex items-center justify-center transition shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                        +
+                    </button>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <span id="total-leads" class="text-6xl font-light tracking-tighter text-white">0</span>
+                    <span class="text-xs font-semibold text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 rounded-full">Live</span>
+                </div>
+            </div>
+
+            <!-- BALÃO 2: VENDAS FECHADAS -->
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between h-64 border-t border-t-purple-500/30 relative overflow-hidden">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-purple-400 text-xs font-bold uppercase tracking-wider block">Conversão Líquida</span>
+                        <h3 class="text-xl font-semibold text-zinc-200 mt-1">Contratos Ativos</h3>
+                        <p class="text-xs text-zinc-400 mt-1">Sincronizado diretamente com o Painel Central.</p>
+                    </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <span id="total-vendas" class="text-6xl font-bold tracking-tighter bg-gradient-to-r from-purple-200 to-purple-400 bg-clip-text text-transparent">0</span>
+                    <span class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">Recorrência</span>
+                </div>
+            </div>
+
+            <!-- BALÃO 3: CALCULADORA DE GANHO MENSAL RECORRENTE -->
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between min-h-64 relative overflow-hidden">
+                <div class="space-y-3">
+                    <div>
+                        <span class="text-amber-500 text-xs font-bold uppercase tracking-wider block">Simulador Perpetuo</span>
+                        <h3 class="text-lg font-semibold text-zinc-200 mt-0.5">Recorrência Mensal Comissões</h3>
+                    </div>
+                    
+                    <div class="space-y-2 max-h-44 overflow-y-auto pr-1">
+                        <div class="flex items-center justify-between bg-white/5 p-2 rounded-xl border border-white/5">
+                            <span class="text-[11px] text-zinc-300 font-medium">Tráfego Pago (R$100/mês)</span>
+                            <input type="number" id="qtd-trafego" value="0" min="0" oninput="calcularComissaoGeral()" class="w-12 bg-white/10 text-center rounded-md font-bold text-xs p-1 text-white focus:outline-none focus:ring-1 focus:ring-amber-500">
+                        </div>
+                        <div class="flex items-center justify-between bg-white/5 p-2 rounded-xl border border-white/5">
+                            <span class="text-[11px] text-zinc-300 font-medium">Site com Pixel (R$100/mês)</span>
+                            <input type="number" id="qtd-site" value="0" min="0" oninput="calcularComissaoGeral()" class="w-12 bg-white/10 text-center rounded-md font-bold text-xs p-1 text-white focus:outline-none focus:ring-1 focus:ring-amber-500">
+                        </div>
+                        <div class="flex items-center justify-between bg-white/5 p-2 rounded-xl border border-white/5">
+                            <span class="text-[11px] text-zinc-300 font-medium">Bot Atendim. (R$200/mês)</span>
+                            <input type="number" id="qtd-bot" value="0" min="0" oninput="calcularComissaoGeral()" class="w-12 bg-white/10 text-center rounded-md font-bold text-xs p-1 text-white focus:outline-none focus:ring-1 focus:ring-amber-500">
+                        </div>
+                        <div class="flex items-center justify-between bg-white/5 p-2 rounded-xl border border-white/5">
+                            <span class="text-[11px] text-zinc-300 font-medium">Consultoria (R$300/mês)</span>
+                            <input type="number" id="qtd-consultoria" value="0" min="0" oninput="calcularComissaoGeral()" class="w-12 bg-white/10 text-center rounded-md font-bold text-xs p-1 text-white focus:outline-none focus:ring-1 focus:ring-amber-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between mt-3 pt-2 border-t border-white/5">
+                    <span class="text-xs text-zinc-400 uppercase font-medium">Total Mensal Reutilizável:</span>
+                    <span id="valor-comissao" class="text-2xl font-black text-emerald-400">R$ 0,00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÁREA CENTRAL: GRÁFICO E META -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- GRÁFICO DE GANHOS EM REAIS -->
+            <div class="glass-card p-6 lg:p-8 rounded-2xl space-y-6 lg:col-span-2 relative overflow-hidden">
+                <div class="space-y-1">
+                    <h2 class="text-xl font-bold tracking-tight text-zinc-100">Gráfico de Ganhos Acumulados</h2>
+                    <p class="text-xs text-zinc-400">Evolução do faturamento recorrente ativo em tempo real.</p>
+                </div>
+                <div class="h-64 w-full relative">
+                    <canvas id="graficoGanhos"></canvas>
+                </div>
+            </div>
+
+            <!-- MONITOR DE META CUMPRIDA -->
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider block">Performance Global</span>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-100 mt-1">Meta Cumprida</h2>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs text-zinc-400">
+                            <span>Progresso Atual</span>
+                            <span id="txt-porcentagem" class="font-bold text-zinc-200">0%</span>
+                        </div>
+                        <div class="w-full bg-white/5 h-3 rounded-full overflow-hidden border border-white/5">
+                            <div id="barra-meta" class="bg-gradient-to-r from-purple-500 to-emerald-400 h-full w-[0%] rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-white/5 space-y-1 text-xs text-zinc-400">
+                    <div class="flex justify-between">
+                        <span>Contratos Ativos:</span>
+                        <span id="txt-vendas-cont" class="font-bold text-white">0 / 10</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Faltam para o Bônus (2%):</span>
+                        <span id="txt-vendas-restante" class="font-bold text-purple-400">10 carteiras</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CADASTRO DE LEAD -->
+    <div id="modalLead" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="glass-card p-6 rounded-2xl max-w-md w-full space-y-4 border border-white/10 bg-zinc-950/90 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold text-zinc-100">Lançar Novo Lead Interessado</h3>
+                <button onclick="fecharModalLead()" class="text-zinc-400 hover:text-white font-bold">✕</button>
+            </div>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs uppercase font-bold tracking-wider text-zinc-400 mb-1">Nome do Cliente</label>
+                    <input type="text" id="modal-nome" placeholder="Ex: João Silva" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-bold tracking-wider text-zinc-400 mb-1">Telefone / WhatsApp</label>
+                    <input type="text" id="modal-telefone" placeholder="Ex: 64999999999" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                </div>
+            </div>
+
+            <div class="pt-2 flex gap-3">
+                <button onclick="fecharModalLead()" class="w-full bg-white/5 hover:bg-white/10 text-zinc-300 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition">Cancelar</button>
+                <button onclick="enviarLeadWhatsApp()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition shadow-[0_0_15px_rgba(16,185,129,0.3)]">Enviar p/ Giovanne</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DO CATÁLOGO -->
+    <div id="modalCatalogo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="glass-card p-6 rounded-2xl max-w-sm w-full space-y-5 border border-white/10 bg-zinc-950/90 shadow-2xl text-center">
+            <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                <h3 class="text-md font-bold tracking-wide text-zinc-100 uppercase flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Menu do Catálogo
+                </h3>
+                <button onclick="fecharModalCatalogo()" class="text-zinc-400 hover:text-white font-bold">✕</button>
+            </div>
+
+            <p class="text-xs text-zinc-400 leading-relaxed">Selecione uma das ações para o portfólio industrial de ofertas vizinho.</p>
+            
+            <div class="flex flex-col gap-3 pt-2">
+                <!-- Acessar Diretamente -->
+                <a href="catalogo.html" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-emerald-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                    Acessar Catálogo Interno
+                </a>
+
+                <!-- Compartilhar no WhatsApp -->
+                <button onclick="compartilharCatalogoWhatsApp()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935-2.186 2.25 2.25 0 0 0-3.935 2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                    </svg>
+                    Compartilhar Link da Oferta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let leads = 0;
+        let vendasAtuais = 0;
+        const metaTotal = 10;
+
+        // FUNÇÕES DO MODAL DO CATÁLOGO
+        function abrirModalCatalogo() {
+            document.getElementById('modalCatalogo').style.display = 'flex';
+        }
+        function fecharModalCatalogo() {
+            document.getElementById('modalCatalogo').style.display = 'none';
+        }
+        function compartilharCatalogoWhatsApp() {
+            const textoMensagem = `Olá! Segue o link do nosso catálogo completo de soluções automatizadas da FlowZap para você dar uma olhada:`;
+            const urlWhastapp = `https://api.whatsapp.com/send?phone=5564935013672&text=${encodeURIComponent(textoMensagem)}`;
+            window.open(urlWhastapp, '_blank');
+            fecharModalCatalogo();
+        }
+
+        // FUNÇÕES DO LEAD
+        function abrirModalLead() {
+            document.getElementById('modalLead').style.display = 'flex';
+        }
+        function fecharModalLead() {
+            document.getElementById('modalLead').style.display = 'none';
+            document.getElementById('modal-nome').value = '';
+            document.getElementById('modal-telefone').value = '';
+        }
+
+        function enviarLeadWhatsApp() {
+            const nome = document.getElementById('modal-nome').value.trim();
+            const telefone = document.getElementById('modal-telefone').value.trim();
+
+            if (!nome || !telefone) {
+                alert('Por favor, preencha o nome e o número do cliente.');
+                return;
+            }
+
+            const textoMensagem = `giovanne cadastrei um cliente e o nome dele e ${nome} e o telefone dele e ${telefone}`;
+            const urlWhastapp = `https://api.whatsapp.com/send?phone=5564935013672&text=${encodeURIComponent(textoMensagem)}`;
+            
+            window.open(urlWhastapp, '_blank');
+
+            leads += 1;
+            document.getElementById('total-leads').innerText = leads;
+            fecharModalLead();
+        }
+
+        function atualizarProgressoVisual(vendasInjetadas) {
+            vendasAtuais = vendasInjetadas;
+            document.getElementById('total-vendas').innerText = vendasAtuais;
+            
+            const porcentagem = Math.min(Math.round((vendasAtuais / metaTotal) * 100), 100);
+            const restantes = Math.max(metaTotal - vendasAtuais, 0);
+
+            document.getElementById('txt-porcentagem').innerText = `${porcentagem}%`;
+            document.getElementById('barra-meta').style.width = `${porcentagem}%`;
+            document.getElementById('txt-vendas-cont').innerText = `${vendasAtuais} / ${metaTotal}`;
+            document.getElementById('txt-vendas-restante').innerText = restantes > 0 ? `${restantes} carteiras` : 'Meta Concluída! Bônus Liberado! 🔥';
+        }
+
+        // CONFIGURAÇÃO DO CHART.JS INICIANDO EM 0 ABSOLUTO
+        const ctx = document.getElementById('graficoGanhos').getContext('2d');
+        const gradienteGanhos = ctx.createLinearGradient(0, 0, 0, 250);
+        gradienteGanhos.addColorStop(0, 'rgba(16, 185, 129, 0.25)');
+        gradienteGanhos.addColorStop(1, 'rgba(16, 185, 129, 0.001)');
+
+        const grafico = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Ponto Inicial', 'Ciclo Atual'],
+                datasets: [{
+                    label: 'Recorrência Mensal',
+                    data: [0, 0],
+                    borderColor: '#10b981',
+                    borderWidth: 3,
+                    backgroundColor: gradienteGanhos,
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#10b981'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let value = context.raw;
+                                return 'Ganhos Ativos: ' + value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#4b5563' } },
+                    y: { 
+                        min: 0,
+                        grid: { color: 'rgba(255,255,255,0.02)' }, 
+                        ticks: { 
+                            color: '#4b5563',
+                            callback: function(value) {
+                                return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        function calcularComissaoGeral() {
+            const qTrafego = parseInt(document.getElementById('qtd-trafego').value) || 0;
+            const qSite = parseInt(document.getElementById('qtd-site').value) || 0;
+            const qBot = parseInt(document.getElementById('qtd-bot').value) || 0;
+            const qConsultoria = parseInt(document.getElementById('qtd-consultoria').value) || 0;
+
+            const total = (qTrafego * 100) + (qSite * 100) + (qBot * 200) + (qConsultoria * 300);
+
+            document.getElementById('valor-comissao').innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+            grafico.data.datasets[0].data[1] = total;
+            grafico.update();
+        }
+
+        calcularComissaoGeral();
+    </script>
+</body>
+</html>

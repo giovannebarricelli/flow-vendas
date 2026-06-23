@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLOWZAP | Dashboard Central</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Lucide Icons (Para ícones bonitos e limpos) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans h-screen flex overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-slate-950 border-r border-slate-800 p-6 flex flex-col justify-between">
+        <div>
+            <div class="flex items-center gap-3 mb-8">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white">
+                    <i data-lucide="zap" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xl font-bold tracking-wider text-white">FLOWZAP</span>
+            </div>
+            
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center gap-3 bg-indigo-600/10 text-indigo-400 px-4 py-3 rounded-lg font-medium transition">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+                </a>
+                <a href="#" class="flex items-center gap-3 text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 px-4 py-3 rounded-lg font-medium transition">
+                    <i data-lucide="smartphone" class="w-5 h-5"></i> Instâncias
+                </a>
+                <a href="#" class="flex items-center gap-3 text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 px-4 py-3 rounded-lg font-medium transition">
+                    <i data-lucide="users" class="w-5 h-5"></i> Vendedores
+                </a>
+            </nav>
+        </div>
+        
+        <div class="border-t border-slate-800 pt-4 text-xs text-slate-500 flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+            Painel Operacional v4.1
+        </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+        
+        <!-- HEADER -->
+        <header class="h-16 bg-slate-950/50 border-b border-slate-800 px-8 flex items-center justify-between shadow-sm">
+            <h1 class="text-lg font-semibold text-white">Monitoramento em Tempo Real</h1>
+            
+            <!-- Configurações da API (Para testes rápidos) -->
+            <div class="flex items-center gap-4 text-sm">
+                <span id="ws-status" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-full font-medium flex items-center gap-1.5 border border-red-500/20">
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span> Desconectado
+                </span>
+            </div>
+        </header>
+
+        <!-- ÁREA DE DASHBOARD -->
+        <div class="flex-1 p-8 overflow-y-auto space-y-6">
+            
+            <!-- CARDS DE METRICAS RAPIDAS -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 shadow-xl flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-slate-400 uppercase tracking-wider">Total de Mensagens</p>
+                        <h3 id="count-total" class="text-3xl font-bold mt-1 text-white">0</h3>
+                    </div>
+                    <div class="bg-blue-500/10 p-3 rounded-lg text-blue-400"><i data-lucide="message-square"></i></div>
+                </div>
+                <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 shadow-xl flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-slate-400 uppercase tracking-wider">Recebidas</p>
+                        <h3 id="count-inbound" class="text-3xl font-bold mt-1 text-emerald-400">0</h3>
+                    </div>
+                    <div class="bg-emerald-500/10 p-3 rounded-lg text-emerald-400"><i data-lucide="arrow-down-left"></i></div>
+                </div>
+                <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 shadow-xl flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-slate-400 uppercase tracking-wider">Enviadas (Vendedores)</p>
+                        <h3 id="count-outbound" class="text-3xl font-bold mt-1 text-indigo-400">0</h3>
+                    </div>
+                    <div class="bg-indigo-500/10 p-3 rounded-lg text-indigo-400"><i data-lucide="arrow-up-right"></i></div>
+                </div>
+            </div>
+
+            <!-- GRID PRINCIPAL DE DADOS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100%-120px)]">
+                
+                <!-- MONITOR DE MENSAGENS EM TEMPO REAL -->
+                <div class="lg:col-span-2 bg-slate-950 rounded-xl border border-slate-800 shadow-xl flex flex-col overflow-hidden">
+                    <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="activity" class="text-indigo-400 w-5 h-5"></i>
+                            <h2 class="font-semibold text-white">Fluxo de Conversas ao Vivo</h2>
+                        </div>
+                        <span class="text-xs text-slate-400">Atualizando via WebSocket</span>
+                    </div>
+                    
+                    <!-- Lista de Mensagens -->
+                    <div id="log-container" class="flex-1 p-4 overflow-y-auto space-y-3 font-mono text-xs">
+                        <div class="text-slate-500 text-center py-8">Aguardando eventos da Evolution API...</div>
+                    </div>
+                </div>
+
+                <!-- ALERTAS / EVENTOS DO SISTEMA -->
+                <div class="bg-slate-950 rounded-xl border border-slate-800 shadow-xl flex flex-col overflow-hidden">
+                    <div class="p-5 border-b border-slate-800 bg-slate-950/50">
+                        <h2 class="font-semibold text-white flex items-center gap-2">
+                            <i data-lucide="bell" class="text-amber-400 w-5 h-5"></i> Status das Instâncias
+                        </h2>
+                    </div>
+                    <div id="system-events" class="flex-1 p-4 overflow-y-auto space-y-2 text-xs">
+                        <div class="bg-slate-900 border border-slate-800 p-3 rounded-lg flex items-center justify-between">
+                            <span class="text-slate-300 font-medium">Instância Padrão</span>
+                            <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Online</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- LOGIC & WEBSOCKET CONNECTION -->
+    <script>
+        // --- COLOQUE SUAS CONFIGURAÇÕES DA EVOLUTION API AQUI ---
+        const EVOLUTION_URL = "http://localhost:8080"; // URL do seu servidor Evolution
+        const GLOBAL_API_KEY = "seu_token_aqui";       // Sua Global Api Key da Evolution
+        
+        // Contadores Globais
+        let total = 0, inbound = 0, outbound = 0;
+
+        function inicializarWebSocket() {
+            // A Evolution API expõe o WebSocket no caminho '/evolution'
+            // Substitua 'http' por 'ws' ou 'https' por 'wss'
+            const wsUrl = `${EVOLUTION_URL.replace('http', 'ws')}/evolution?globalApiKey=${GLOBAL_API_KEY}`;
+            
+            const ws = new WebSocket(wsUrl);
+            const statusBadge = document.getElementById('ws-status');
+            const logContainer = document.getElementById('log-container');
+
+            ws.onopen = () => {
+                statusBadge.className = "bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full font-medium flex items-center gap-1.5 border border-emerald-500/20";
+                statusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Conectado via WS`;
+                logContainer.innerHTML = `<div class="text-emerald-500 text-center py-4">[Sucesso] Conectado ao WebSocket da Evolution API. Ouvindo mensagens...</div>`;
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    
+                    // Tratamento dos principais eventos de mensagem da Evolution
+                    if (data.event === "messages.upsert" || data.event === "messages.update") {
+                        processarMensagem(data);
+                    }
+                } catch (error) {
+                    console.error("Erro ao processar dados do WS:", error);
+                }
+            };
+
+            ws.onclose = () => {
+                statusBadge.className = "bg-red-500/10 text-red-400 px-3 py-1 rounded-full font-medium flex items-center gap-1.5 border border-red-500/20";
+                statusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500"></span> Desconectado`;
+                // Tenta reconectar após 5 segundos
+                setTimeout(inicializarWebSocket, 5500);
+            };
+
+            ws.onerror = (err) => {
+                console.error("Erro no WebSocket:", err);
+                ws.close();
+            };
+        }
+
+        function processarMensagem(data) {
+            const logContainer = document.getElementById('log-container');
+            
+            // Remove a mensagem inicial de "aguardando" se for a primeira
+            if (total === 0) logContainer.innerHTML = '';
+
+            const msgData = data.data;
+            const isFromMe = msgData.key.fromMe; // true se o vendedor enviou, false se o cliente enviou
+            const senderName = msgData.pushName || "Cliente";
+            const messageText = msgData.message?.conversation || msgData.message?.extendedTextMessage?.text || "[Mídia/Outro]";
+            const instance = data.instance || "Desconhecida";
+
+            // Atualiza contadores
+            total++;
+            if (isFromMe) outbound++; else inbound++;
+            
+            document.getElementById('count-total').innerText = total;
+            document.getElementById('count-inbound').innerText = inbound;
+            document.getElementById('count-outbound').innerText = outbound;
+
+            // Cria o elemento visual do log da mensagem
+            const logRow = document.createElement('div');
+            logRow.className = `p-3 rounded-lg border flex flex-col gap-1 transition-all ${
+                isFromMe 
+                ? 'bg-indigo-950/30 border-indigo-500/20 border-l-4 border-l-indigo-500' 
+                : 'bg-emerald-950/20 border-emerald-500/15 border-l-4 border-l-emerald-500'
+            }`;
+
+            logRow.innerHTML = `
+                <div class="flex justify-between items-center text-[10px] text-slate-400">
+                    <span class="font-bold uppercase tracking-wider ${isFromMe ? 'text-indigo-400' : 'text-emerald-400'}">
+                        ${isFromMe ? '🚀 Enviada (Vendedor)' : '📥 Recebida (Cliente)'}
+                    </span>
+                    <span>Instância: <b class="text-slate-300">${instance}</b></span>
+                </div>
+                <div class="text-slate-200 mt-1">
+                    <span class="text-slate-400 font-semibold">${isFromMe ? 'Você/Vendedor' : senderName}:</span> 
+                    ${escapeHtml(messageText)}
+                </div>
+            `;
+
+            // Insere no topo para ver sempre o mais recente primeiro
+            logContainer.insertBefore(logRow, logContainer.firstChild);
+
+            // Limita o DOM a 50 logs para não travar a tela com o tempo
+            if (logContainer.children.length > 50) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
+        // Helper para evitar XSS ao injetar texto no HTML
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Inicializa os ícones do Lucide e roda o WebSocket
+        lucide.createIcons();
+        inicializarWebSocket();
+    </script>
+</body>
+</html>
